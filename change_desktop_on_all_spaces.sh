@@ -33,8 +33,8 @@ change_desktop_old() {
 }
 
 change_desktop_new() {
-    # current_path=$(sqlite3 -noheader -batch ${HOME}/Library/Application\ Support/Dock/desktoppicture.db 'select value from data limit 1')
-    # if [[ "$current_path" != "$1" ]]; then
+    current_path=$(sqlite3 -noheader -batch ${HOME}/Library/Application\ Support/Dock/desktoppicture.db 'select value from data limit 1')
+    if [[ "$current_path" != "$1" ]]; then
       sqlite3 "${HOME}/Library/Application Support/Dock/desktoppicture.db" " \
           DELETE FROM data; \
           DELETE FROM preferences; \
@@ -72,12 +72,12 @@ change_desktop_new() {
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 31); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 32);
       " && killall Dock
-    # fi
+    fi
 }
 
 IMG_FILE=$1
-echo $IMG_FILE
-echo $(image_already_set $IMG_FILE)
+# echo $IMG_FILE
+# echo $(image_already_set $IMG_FILE)
 # exit
 OSX_VERSION=$(sw_vers -productVersion | cut -d '.' -f 2)
 if (( $OSX_VERSION <= 12 )); then
