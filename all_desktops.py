@@ -33,16 +33,19 @@ def change_desktop_new_random(file_arr):
     home = expanduser("~")
 
     data_block = ""
-    file_block = ""
+    prefs_block = ""
 
     # os x limits to 16 spaces and there are 2 entries per (1-32)
     PREF_ENTRIES = 32
 
     for item in file_arr:
-        data_block += "INSERT INTO data (value) VALUES ('{item}');"
+        data_block += "INSERT INTO data (value) VALUES ('%s'); " % item
+
+    for i in range(1, PREF_ENTRIES):
+        prefs_block += "INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, %s); " % i 
 
     d = {'home': home, 'data_block': data_block,
-         'file_block': file_block}
+         'prefs_block': prefs_block}
     command = '''
         sqlite3 "{home}/Library/Application Support/Dock/desktoppicture.db" " \
             DELETE FROM data; \
@@ -133,6 +136,10 @@ if __name__ == "__main__":
     # print(image_already_set(file))
     # sys.exit()
 
+    # TODO: add -f mode (force, don't check if already set)
+    # TODO: add --dry-run mode (don't do anything)
+    # TODO: add --verbose mode (print command)
+
     if len(sys.argv) == 1:
         print("Please specify at least one image!")
         sys.exit(1)
@@ -148,6 +155,14 @@ if __name__ == "__main__":
             print("not done yet")
             args = sys.argv[1:]
             print(args)
+
+            # # TESTING
+            # file = sys.argv[1]
+            # change_desktop_new(file)
+            # print("\n\n-----------------\n\n")
+            # # END TESTING
+
+            change_desktop_new_random(args)
             pass
         else:
             file = sys.argv[1]
