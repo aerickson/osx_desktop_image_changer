@@ -1,23 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 from os.path import expanduser
 import re
-
-
-
-# image_already_set() {
-#     current_path=$(sqlite3 -noheader -batch ${HOME}/Library/Application\ Support/Dock/desktoppicture.db 'select value from data limit 1')
-#     echo "cp: $current_path"
-#     if [[ "$current_path" != "$1" ]]; then
-#       echo 0
-#       return
-#     fi
-#     echo 1
-# }
-
 import subprocess
 import sys
-
 
 
 def run_command(command):
@@ -127,6 +113,7 @@ if __name__ == "__main__":
         change_desktop_old(file)
     else:
         if len(sys.argv) > 2:
+            # TODO: support random or alternating
             print("not done yet")
             pass
         else:
