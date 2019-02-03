@@ -107,7 +107,7 @@ if __name__ == "__main__":
     # sys.exit()
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
-    print(OSX_VERSION)
+    # print(OSX_VERSION)
     if int(OSX_VERSION) <= 12:
         file = sys.argv[1]
         change_desktop_old(file)
@@ -115,6 +115,8 @@ if __name__ == "__main__":
         if len(sys.argv) > 2:
             # TODO: support random or alternating
             print("not done yet")
+            args = sys.argv[1:]
+            print(args)
             pass
         else:
             file = sys.argv[1]
