@@ -134,19 +134,30 @@ def change_desktop_new(file):
     print(command)
     return run_command(command)
 
-def change_desktop_old():
-    pass
+def change_desktop_old(file):
+    home = expanduser("~")
+    d = {'home': home, 'file': file}
 
+    command = '''
+        sqlite3 "{home}/Library/Application Support/Dock/desktoppicture.db" " \
+            update data set value = '${file}' \
+        " && killall Dock
+'''
+    command = command.format(**d).strip()
+    command = re.sub(' +', ' ', command)
+    print(command)
+    # return run_command(command)
 
 if __name__ == "__main__":
     
     # print(run_command('ls -l'))
-    print( len(sys.argv))
+    # print( len(sys.argv))
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
     print(OSX_VERSION)
     if int(OSX_VERSION) <= 12:
-        change_desktop_old()
+        file = sys.argv[1]
+        change_desktop_old(file)
     else:
         if len(sys.argv) > 2:
             print("not done yet")
