@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import itertools
 from os.path import expanduser
 import re
 import subprocess
@@ -41,8 +42,12 @@ def change_desktop_new_random(file_arr):
     for item in file_arr:
         data_block += "INSERT INTO data (value) VALUES ('%s'); " % item
 
-    for i in range(1, PREF_ENTRIES):
-        prefs_block += "INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, %s); " % i 
+    my_iterator = itertools.cycle(range(1, len(file_arr) + 1))
+    print(len(file_arr))
+    for i in range(1, PREF_ENTRIES + 1):
+        element = my_iterator.next()
+        # print(element)
+        prefs_block += "INSERT INTO preferences (key, data_id, picture_id) VALUES (1, %s, %s); " % (element, i) 
 
     d = {'home': home, 'data_block': data_block,
          'prefs_block': prefs_block}
