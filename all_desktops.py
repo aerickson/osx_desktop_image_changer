@@ -29,6 +29,33 @@ def image_already_set(file):
         return True
     return False
 
+def change_desktop_new_random(file_arr):
+    home = expanduser("~")
+
+    data_block = ""
+    file_block = ""
+
+    # os x limits to 16 spaces and there are 2 entries per (1-32)
+    PREF_ENTRIES = 32
+
+    for item in file_arr:
+        data_block += "INSERT INTO data (value) VALUES ('{item}');"
+
+    d = {'home': home, 'data_block': data_block,
+         'file_block': file_block}
+    command = '''
+        sqlite3 "{home}/Library/Application Support/Dock/desktoppicture.db" " \
+            DELETE FROM data; \
+            DELETE FROM preferences; \
+            {data_block} \
+            {prefs_block} \
+        " && killall Dock
+'''
+    command = command.format(**d).strip()
+    command = re.sub(' +', ' ', command)
+    # print(command)
+    return run_command(command)
+
 def change_desktop_new(file):
     if image_already_set(file):
         return
@@ -105,6 +132,10 @@ if __name__ == "__main__":
     # file = sys.argv[1]
     # print(image_already_set(file))
     # sys.exit()
+
+    if len(sys.argv) == 1:
+        print("Please specify at least one image!")
+        sys.exit(1)
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
     # print(OSX_VERSION)
