@@ -37,7 +37,7 @@ def image_already_set(file):
         return True
     return False
 
-def change_desktop_new_random(file_arr):
+def change_desktop_new_alternating(file_arr):
     home = expanduser("~")
 
     data_block = ""
@@ -176,7 +176,7 @@ if __name__ == "__main__":
             # print("\n\n-----------------\n\n")
             # # END TESTING
 
-            change_desktop_new_random(args)
+            change_desktop_new_alternating(args)
             pass
         else:
             file = sys.argv[1]
