@@ -34,11 +34,12 @@ change_desktop_old() {
 
 change_desktop_new() {
     current_path=$(sqlite3 -noheader -batch ${HOME}/Library/Application\ Support/Dock/desktoppicture.db 'select value from data limit 1')
-    if [[ "$current_path" != "$1" ]]; then
+#    if [[ "$current_path" != "$1" ]]; then
       sqlite3 "${HOME}/Library/Application Support/Dock/desktoppicture.db" " \
           DELETE FROM data; \
           DELETE FROM preferences; \
           INSERT INTO data (value) VALUES ('$1'); \
+          INSERT INTO data (value) VALUES ('$2'); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 1); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 2); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 3); \
@@ -52,8 +53,8 @@ change_desktop_new() {
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 11); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 12); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 13); \
-          INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 14); \
-          INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 15); \
+          INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 2, 14); \
+          INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 2, 15); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 16); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 17); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 18); \
@@ -72,7 +73,7 @@ change_desktop_new() {
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 31); \
           INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 32);
       " && killall Dock
-    fi
+#    fi
 }
 
 IMG_FILE=$1
