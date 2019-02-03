@@ -11,7 +11,8 @@ def run_command(command):
     # c = subprocess.call(["ls", "-l"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     # print(c.stdout.decode('utf-8'))
     output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
-    return output.decode('utf-8')
+    return output.decode("utf-8")
+
 
 def double_array(an_arr):
     new_arr = []
@@ -20,22 +21,24 @@ def double_array(an_arr):
         new_arr.append(item)
     return new_arr
 
+
 def image_already_set(file):
     home = expanduser("~")
-    d = {'home': home, 'file': file}
+    d = {"home": home, "file": file}
 
-    command = '''
+    command = """
         sqlite3 "{home}/Library/Application Support/Dock/desktoppicture.db" \
             "select value from data limit 1"
-'''
+"""
     command = command.format(**d).strip()
-    command = re.sub(' +', ' ', command)
+    command = re.sub(" +", " ", command)
     # print(command)
     output = run_command(command).strip()
     # print(output)
     if output == file:
         return True
     return False
+
 
 def change_desktop_new_alternating(file_arr):
     home = expanduser("~")
@@ -56,31 +59,34 @@ def change_desktop_new_alternating(file_arr):
     for i in range(1, PREF_ENTRIES + 1):
         element = my_iterator.next()
         # print(element)
-        prefs_block += "INSERT INTO preferences (key, data_id, picture_id) VALUES (1, %s, %s); " % (element, i) 
+        prefs_block += (
+            "INSERT INTO preferences (key, data_id, picture_id) VALUES (1, %s, %s); "
+            % (element, i)
+        )
 
-    d = {'home': home, 'data_block': data_block,
-         'prefs_block': prefs_block}
-    command = '''
+    d = {"home": home, "data_block": data_block, "prefs_block": prefs_block}
+    command = """
         sqlite3 "{home}/Library/Application Support/Dock/desktoppicture.db" " \
             DELETE FROM data; \
             DELETE FROM preferences; \
             {data_block} \
             {prefs_block} \
         " && killall Dock
-'''
+"""
     command = command.format(**d).strip()
-    command = re.sub(' +', ' ', command)
+    command = re.sub(" +", " ", command)
     print(command)
     return run_command(command)
+
 
 def change_desktop_new(file):
     # if image_already_set(file):
     #     return
 
     home = expanduser("~")
-    d = {'home': home, 'file': file}
+    d = {"home": home, "file": file}
 
-    command = '''
+    command = """
         sqlite3 "{home}/Library/Application Support/Dock/desktoppicture.db" " \
             DELETE FROM data; \
             DELETE FROM preferences; \
@@ -118,31 +124,33 @@ def change_desktop_new(file):
             INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 31); \
             INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 32); \
         " && killall Dock
-'''
+"""
     command = command.format(**d).strip()
-    command = re.sub(' +', ' ', command)
+    command = re.sub(" +", " ", command)
     # print(command)
     return run_command(command)
+
 
 def change_desktop_old(file):
     if image_already_set(file):
         return
 
     home = expanduser("~")
-    d = {'home': home, 'file': file}
+    d = {"home": home, "file": file}
 
-    command = '''
+    command = """
         sqlite3 "{home}/Library/Application Support/Dock/desktoppicture.db" " \
             update data set value = '${file}' \
         " && killall Dock
-'''
+"""
     command = command.format(**d).strip()
-    command = re.sub(' +', ' ', command)
+    command = re.sub(" +", " ", command)
     # print(command)
     return run_command(command)
 
+
 if __name__ == "__main__":
-    
+
     # print(run_command('ls -l'))
     # print( len(sys.argv))
 
@@ -181,4 +189,3 @@ if __name__ == "__main__":
         else:
             file = sys.argv[1]
             change_desktop_new(file)
-    
