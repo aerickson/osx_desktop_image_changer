@@ -13,6 +13,13 @@ def run_command(command):
     output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
     return output.decode('utf-8')
 
+def double_array(an_arr):
+    new_arr = []
+    for item in an_arr:
+        new_arr.append(item)
+        new_arr.append(item)
+    return new_arr
+
 def image_already_set(file):
     home = expanduser("~")
     d = {'home': home, 'file': file}
@@ -42,7 +49,9 @@ def change_desktop_new_random(file_arr):
     for item in file_arr:
         data_block += "INSERT INTO data (value) VALUES ('%s'); " % item
 
-    my_iterator = itertools.cycle(range(1, len(file_arr) + 1))
+    single_arr = range(1, len(file_arr) + 1)
+    double_arr = double_array(single_arr)
+    my_iterator = itertools.cycle(double_arr)
     print(len(file_arr))
     for i in range(1, PREF_ENTRIES + 1):
         element = my_iterator.next()
@@ -61,12 +70,12 @@ def change_desktop_new_random(file_arr):
 '''
     command = command.format(**d).strip()
     command = re.sub(' +', ' ', command)
-    # print(command)
+    print(command)
     return run_command(command)
 
 def change_desktop_new(file):
-    if image_already_set(file):
-        return
+    # if image_already_set(file):
+    #     return
 
     home = expanduser("~")
     d = {'home': home, 'file': file}
