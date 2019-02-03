@@ -152,9 +152,9 @@ if __name__ == "__main__":
     else:
         if len(sys.argv) > 2:
             # TODO: support random or alternating
-            print("not done yet")
-            args = sys.argv[1:]
-            print(args)
+            # print("not done yet")
+            # args = sys.argv[1:]
+            # print(args)
 
             # # TESTING
             # file = sys.argv[1]
