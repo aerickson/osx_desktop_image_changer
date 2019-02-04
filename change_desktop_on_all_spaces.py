@@ -156,9 +156,15 @@ def change_desktop_old(file):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("f", "--force",  help="the base")
-    parser.add_argument("d", "--dry-run",  help="the exponent")
-    parser.add_argument("v", "--verbosity", action="count", default=0)
+    parser.add_argument("file", help="", nargs='+')
+    parser.add_argument("-f", "--force", action="store_true", help="don't check if the image is already set")
+    parser.add_argument("-d", "--debug", action="store_true", help="don't do anything")
+    # parser.add_argument("-v", "--verbosity", action="count", default=0)
+    #
+    parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
+    parser.add_argument("-r", "--random", action="store_true", help="set each spaces randomly using all images")
+    parser.add_argument("-a", "--alternating", action="store_true", help="set all spaces in the order given (repeats)")
+
     args = parser.parse_args()
         # answer = args.x**args.y
         # if args.verbosity >= 2:
@@ -171,6 +177,7 @@ if __name__ == "__main__":
     # TODO: add -f mode (force, don't check if already set)
     # TODO: add --dry-run mode (don't do anything)
     # TODO: add --verbose mode (print command)
+    print(sys.argv)
 
     if len(sys.argv) == 1:
         print("Please specify at least one image!")
@@ -188,7 +195,7 @@ if __name__ == "__main__":
             # TODO: possible other modes:
             #   - select one randomly, set all to it (-s)
             #   - pick a new random image per space (-r)
-            #   - alternatinv (-a, current default)
+            #   - alternating (-a, current default)
 
             args = sys.argv[1:]
             change_desktop_new_alternating(args)
