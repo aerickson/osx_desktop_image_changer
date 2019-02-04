@@ -178,8 +178,12 @@ if __name__ == "__main__":
     # sys.exit()
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
-    # print(OSX_VERSION)
+    if args.verbose:
+        print("OS X version: %s" % OSX_VERSION)
     if int(OSX_VERSION) <= 12:
+        if args.verbose:
+            print("< 10.13: single image")
+
         if len(args.images) == 1:
             file = args.images[0]
             change_desktop_old(file, args)
@@ -188,13 +192,16 @@ if __name__ == "__main__":
             sys.exit(1)
     else:
         if len(args.images) >= 2:
+            if args.verbose:
+                print("10.13+: multi image")
             # TODO: possible other modes:
             #   - select one randomly, set all to it (-s)
             #   - pick a new random image per space (-r)
 
-            args = sys.argv[1:]
-            change_desktop_new_alternating(args, args)
+            change_desktop_new_alternating(args.images, args)
             pass
         else:
+            if args.verbose:
+                print("10.13+: single image")
             file = args.images[0]
             change_desktop_new(file, args)
