@@ -84,7 +84,7 @@ def change_desktop_new_alternating(file_arr, args):
 
 
 def change_desktop_new(file, args):
-    if image_already_set(file):
+    if image_already_set(file) and not args.force:
         return
 
     home = expanduser("~")
@@ -140,7 +140,7 @@ def change_desktop_new(file, args):
 
 
 def change_desktop_old(file, args):
-    if image_already_set(file):
+    if image_already_set(file) and not args.force:
         return
 
     home = expanduser("~")
