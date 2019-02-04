@@ -154,13 +154,6 @@ def change_desktop_old(file):
 
 if __name__ == "__main__":
 
-    # print(run_command('ls -l'))
-    # print( len(sys.argv))
-
-    # file = sys.argv[1]
-    # print(image_already_set(file))
-    # sys.exit()
-
     # TODO: add -f mode (force, don't check if already set)
     # TODO: add --dry-run mode (don't do anything)
     # TODO: add --verbose mode (print command)
