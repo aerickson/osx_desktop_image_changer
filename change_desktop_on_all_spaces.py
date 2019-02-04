@@ -77,8 +77,10 @@ def change_desktop_new_alternating(file_arr, args):
 """
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
-    # print(command)
-    return run_command(command)
+    if args.verbose or args.dry_run:
+        print(command)
+    if not args.dry_run:
+        return run_command(command)
 
 
 def change_desktop_new(file, args):
@@ -151,8 +153,10 @@ def change_desktop_old(file, args):
 """
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
-    # print(command)
-    return run_command(command)
+    if args.verbose or args.dry_run:
+        print(command)
+    if not args.dry_run:
+        return run_command(command)
 
 
 if __name__ == "__main__":
