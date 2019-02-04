@@ -81,8 +81,8 @@ def change_desktop_new_alternating(file_arr):
 
 
 def change_desktop_new(file):
-    # if image_already_set(file):
-    #     return
+    if image_already_set(file):
+        return
 
     home = expanduser("~")
     d = {"home": home, "file": file}
