@@ -46,8 +46,9 @@ def change_desktop_new_alternating(file_arr):
     data_block = ""
     prefs_block = ""
 
-    # os x limits to 16 spaces and there are 2 entries per (1-32)
-    PREF_ENTRIES = 32
+    # desktops 1 - 16
+    # 2 per screen and then one for the default screen or something
+    PREF_ENTRIES = 34
 
     for item in file_arr:
         data_block += "INSERT INTO data (value) VALUES ('%s'); " % item
@@ -123,6 +124,8 @@ def change_desktop_new(file):
             INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 30); \
             INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 31); \
             INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 32); \
+            INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 33); \
+            INSERT INTO preferences (key, data_id, picture_id) VALUES (1, 1, 34); \
         " && killall Dock
 """
     command = command.format(**d).strip()
