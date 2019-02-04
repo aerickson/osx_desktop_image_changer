@@ -158,40 +158,29 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage='%(prog)s [options] image [image ...]')
     parser.add_argument("images", help="an image file", nargs='+', metavar="image")
     parser.add_argument("-f", "--force", action="store_true", help="don't check if the image is already set")
-    parser.add_argument("-d", "--debug", action="store_true", help="don't do anything")
+    parser.add_argument("-d", "--dry-run", action="store_true", help="don't do anything")
+    parser.add_argument("-v", "--verbose",
+                    action="store_true", dest="verbose", default=False,
+                    help="print extra information")
     #
     parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
     parser.add_argument("-r", "--random", action="store_true", help="set each spaces randomly using all images")
     parser.add_argument("-a", "--alternating", action="store_true", help="set all spaces in the order given (repeats)")
 
     args = parser.parse_args()
-        # answer = args.x**args.y
-        # if args.verbosity >= 2:
-        #     print "{} to the power {} equals {}".format(args.x, args.y, answer)
-        # elif args.verbosity >= 1:
-        #     print "{}^{} == {}".format(args.x, args.y, answer)
-        # else:
-        #     print answer
-
-    # TODO: add -f mode (force, don't check if already set)
-    # TODO: add --dry-run mode (don't do anything)
-    # TODO: add --verbose mode (print command)
-    # print(sys.argv)
-
-    # if len(sys.argv) == 1:
-    #     print("Please specify at least one image!")
-    #     sys.exit(1)
-
-    print(args.images)
-    sys.exit()
+    # print(args)
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
     # print(OSX_VERSION)
     if int(OSX_VERSION) <= 12:
-        file = sys.argv[1]
-        change_desktop_old(file)
+        if len(args.images) == 1:
+            file = args.images[0]
+            change_desktop_old(file)
+        else:
+            print("ERROR: Only a single image is supported!")
+            sys.exit(1)
     else:
-        if len(sys.argv) > 2:
+        if len(args.images) >= 2:
             # TODO: possible other modes:
             #   - select one randomly, set all to it (-s)
             #   - pick a new random image per space (-r)
@@ -201,5 +190,5 @@ if __name__ == "__main__":
             change_desktop_new_alternating(args)
             pass
         else:
-            file = sys.argv[1]
+            file = args.images[0]
             change_desktop_new(file)
