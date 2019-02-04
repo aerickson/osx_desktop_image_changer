@@ -176,17 +176,12 @@ if __name__ == "__main__":
         change_desktop_old(file)
     else:
         if len(sys.argv) > 2:
-            # TODO: support random or alternating
-            # print("not done yet")
+            # TODO: possible other modes:
+            #   - select one randomly, set all to it (-s)
+            #   - pick a new random image per space (-r)
+            #   - alternatinv (-a, current default)
+
             args = sys.argv[1:]
-            # print(args)
-
-            # # TESTING
-            # file = sys.argv[1]
-            # change_desktop_new(file)
-            # print("\n\n-----------------\n\n")
-            # # END TESTING
-
             change_desktop_new_alternating(args)
             pass
         else:
