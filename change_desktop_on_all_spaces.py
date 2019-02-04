@@ -155,7 +155,7 @@ def change_desktop_old(file):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(usage='%(prog)s [options] file [file ...]')
     parser.add_argument("file", help="", nargs='+')
     parser.add_argument("-f", "--force", action="store_true", help="don't check if the image is already set")
     parser.add_argument("-d", "--debug", action="store_true", help="don't do anything")
