@@ -163,9 +163,9 @@ if __name__ == "__main__":
                     action="store_true", dest="verbose", default=False,
                     help="print extra information")
     #
-    parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
-    parser.add_argument("-r", "--random", action="store_true", help="set each spaces randomly using all images")
-    parser.add_argument("-a", "--alternating", action="store_true", help="set all spaces in the order given (repeats)")
+    # parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
+    # parser.add_argument("-r", "--random", action="store_true", help="set each spaces randomly using all images")
+    # parser.add_argument("-a", "--alternating", action="store_true", help="set all spaces in the order given (repeats)")
 
     args = parser.parse_args()
     # print(args)
@@ -184,7 +184,6 @@ if __name__ == "__main__":
             # TODO: possible other modes:
             #   - select one randomly, set all to it (-s)
             #   - pick a new random image per space (-r)
-            #   - alternating (-a, current default)
 
             args = sys.argv[1:]
             change_desktop_new_alternating(args)
