@@ -161,13 +161,25 @@ def change_desktop_old(file, args):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(usage='%(prog)s [options] image [image ...]')
-    parser.add_argument("images", help="an image file", nargs='+', metavar="image")
-    parser.add_argument("-f", "--force", action="store_true", help="don't check if the image is already set")
-    parser.add_argument("-d", "--dry-run", action="store_true", help="don't do anything")
-    parser.add_argument("-v", "--verbose",
-                    action="store_true", dest="verbose", default=False,
-                    help="print extra information")
+    parser = argparse.ArgumentParser(usage="%(prog)s [options] image [image ...]")
+    parser.add_argument("images", help="an image file", nargs="+", metavar="image")
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="don't check if the image is already set",
+    )
+    parser.add_argument(
+        "-d", "--dry-run", action="store_true", help="don't do anything"
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        default=False,
+        help="print extra information",
+    )
     #
     # parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
     # parser.add_argument("-r", "--random", action="store_true", help="set each spaces randomly using all images")
