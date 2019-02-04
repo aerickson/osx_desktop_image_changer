@@ -14,3 +14,8 @@ I couldn't find any tools to set the image on all spaces in 10.13 or 10.14.
 # - cycles through specified images
 ./change_desktop_on_all_spaces.py img1 img2 img3 img4 ... img999999
 ```
+
+## known issues
+
+- when setting multiple images, if you've reordered the spaces the alternation order can't be guaranteed
+  - TODO: need to introspect ~/Library/Preferences/com.apple.spaces.plist and figure out order? 
