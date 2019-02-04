@@ -18,4 +18,5 @@ I couldn't find any tools to set the image on all spaces in 10.13 or 10.14.
 ## known issues
 
 - when setting multiple images, if you've reordered the spaces the alternation order can't be guaranteed
-  - TODO: need to introspect ~/Library/Preferences/com.apple.spaces.plist and figure out order? 
+  - TODO: need to inspect ~/Library/Preferences/com.apple.spaces.plist and figure out order? 
+    - http://ianyh.com/blog/identifying-spaces-in-mac-os-x/
