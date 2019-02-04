@@ -131,8 +131,10 @@ def change_desktop_new(file, args):
 """
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
-    # print(command)
-    return run_command(command)
+    if args.verbose or args.dry_run:
+        print(command)
+    if not args.dry_run:
+        return run_command(command)
 
 
 def change_desktop_old(file, args):
@@ -169,6 +171,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     # print(args)
+    # sys.exit()
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
     # print(OSX_VERSION)
