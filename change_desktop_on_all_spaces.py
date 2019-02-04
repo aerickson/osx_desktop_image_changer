@@ -3,6 +3,7 @@
 import argparse
 import itertools
 from os.path import expanduser
+import random
 import re
 import subprocess
 import sys
@@ -22,8 +23,7 @@ def double_array(an_arr):
         new_arr.append(item)
     return new_arr
 
-
-def image_already_set(file):
+def get_current_image():
     home = expanduser("~")
     d = {"home": home, "file": file}
 
@@ -35,11 +35,22 @@ def image_already_set(file):
     command = re.sub(" +", " ", command)
     # print(command)
     output = run_command(command).strip()
+    return output
+
+def image_already_set(file):
+    output = get_current_image()
     # print(output)
     if output == file:
         return True
     return False
 
+def change_desktop_new_single_random(file_arr, args):
+    # remove the current image from the list
+    current = get_current_image()
+    _deleted_item = file_arr.remove(current)
+
+    choice = random.choice(file_arr)
+    return change_desktop_new(choice, args)
 
 def change_desktop_new_alternating(file_arr, args):
     home = expanduser("~")
@@ -181,9 +192,9 @@ if __name__ == "__main__":
         help="print extra information",
     )
     #
-    # parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
+    parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
     # parser.add_argument("-r", "--random", action="store_true", help="set each spaces randomly using all images")
-    # parser.add_argument("-a", "--alternating", action="store_true", help="set all spaces in the order given (repeats)")
+    parser.add_argument("-a", "--alternating", action="store_true", help="set all spaces in the order given (repeats)")
 
     args = parser.parse_args()
     # print(args)
@@ -209,9 +220,10 @@ if __name__ == "__main__":
             # TODO: possible other modes:
             #   - select one randomly, set all to it (-s)
             #   - pick a new random image per space (-r)
-
-            change_desktop_new_alternating(args.images, args)
-            pass
+            if args.single_random:
+                change_desktop_new_single_random(args.images, args)
+            else:
+                change_desktop_new_alternating(args.images, args)
         else:
             if args.verbose:
                 print("10.13+: single image")
