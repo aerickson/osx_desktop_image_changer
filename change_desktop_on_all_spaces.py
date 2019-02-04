@@ -56,7 +56,7 @@ def change_desktop_new_alternating(file_arr):
     single_arr = range(1, len(file_arr) + 1)
     double_arr = double_array(single_arr)
     my_iterator = itertools.cycle(double_arr)
-    print(len(file_arr))
+    # print(len(file_arr))
     for i in range(1, PREF_ENTRIES + 1):
         element = my_iterator.next()
         # print(element)
@@ -76,7 +76,7 @@ def change_desktop_new_alternating(file_arr):
 """
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
-    print(command)
+    # print(command)
     return run_command(command)
 
 
