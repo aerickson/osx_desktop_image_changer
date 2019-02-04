@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import argparse
 import itertools
 from os.path import expanduser
 import re
@@ -40,7 +41,7 @@ def image_already_set(file):
     return False
 
 
-def change_desktop_new_alternating(file_arr):
+def change_desktop_new_alternating(file_arr, args):
     home = expanduser("~")
 
     data_block = ""
@@ -76,12 +77,14 @@ def change_desktop_new_alternating(file_arr):
 """
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
-    # print(command)
-    return run_command(command)
+    if args.verbose or args.dry_run:
+        print(command)
+    if not args.dry_run:
+        return run_command(command)
 
 
-def change_desktop_new(file):
-    if image_already_set(file):
+def change_desktop_new(file, args):
+    if image_already_set(file) and not args.force:
         return
 
     home = expanduser("~")
@@ -130,12 +133,14 @@ def change_desktop_new(file):
 """
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
-    # print(command)
-    return run_command(command)
+    if args.verbose or args.dry_run:
+        print(command)
+    if not args.dry_run:
+        return run_command(command)
 
 
-def change_desktop_old(file):
-    if image_already_set(file):
+def change_desktop_old(file, args):
+    if image_already_set(file) and not args.force:
         return
 
     home = expanduser("~")
@@ -148,35 +153,55 @@ def change_desktop_old(file):
 """
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
-    # print(command)
-    return run_command(command)
+    if args.verbose or args.dry_run:
+        print(command)
+    if not args.dry_run:
+        return run_command(command)
 
 
 if __name__ == "__main__":
 
-    # TODO: add -f mode (force, don't check if already set)
-    # TODO: add --dry-run mode (don't do anything)
-    # TODO: add --verbose mode (print command)
+    parser = argparse.ArgumentParser(usage='%(prog)s [options] image [image ...]')
+    parser.add_argument("images", help="an image file", nargs='+', metavar="image")
+    parser.add_argument("-f", "--force", action="store_true", help="don't check if the image is already set")
+    parser.add_argument("-d", "--dry-run", action="store_true", help="don't do anything")
+    parser.add_argument("-v", "--verbose",
+                    action="store_true", dest="verbose", default=False,
+                    help="print extra information")
+    #
+    # parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
+    # parser.add_argument("-r", "--random", action="store_true", help="set each spaces randomly using all images")
+    # parser.add_argument("-a", "--alternating", action="store_true", help="set all spaces in the order given (repeats)")
 
-    if len(sys.argv) == 1:
-        print("Please specify at least one image!")
-        sys.exit(1)
+    args = parser.parse_args()
+    # print(args)
+    # sys.exit()
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
-    # print(OSX_VERSION)
+    if args.verbose:
+        print("OS X version: %s" % OSX_VERSION)
     if int(OSX_VERSION) <= 12:
-        file = sys.argv[1]
-        change_desktop_old(file)
+        if args.verbose:
+            print("< 10.13: single image")
+
+        if len(args.images) == 1:
+            file = args.images[0]
+            change_desktop_old(file, args)
+        else:
+            print("ERROR: Only a single image is supported!")
+            sys.exit(1)
     else:
-        if len(sys.argv) > 2:
+        if len(args.images) >= 2:
+            if args.verbose:
+                print("10.13+: multi image")
             # TODO: possible other modes:
             #   - select one randomly, set all to it (-s)
             #   - pick a new random image per space (-r)
-            #   - alternatinv (-a, current default)
 
-            args = sys.argv[1:]
-            change_desktop_new_alternating(args)
+            change_desktop_new_alternating(args.images, args)
             pass
         else:
-            file = sys.argv[1]
-            change_desktop_new(file)
+            if args.verbose:
+                print("10.13+: single image")
+            file = args.images[0]
+            change_desktop_new(file, args)
