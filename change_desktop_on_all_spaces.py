@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import argparse
 import itertools
 from os.path import expanduser
 import re
@@ -154,6 +155,19 @@ def change_desktop_old(file):
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("f", "--force",  help="the base")
+    parser.add_argument("d", "--dry-run",  help="the exponent")
+    parser.add_argument("v", "--verbosity", action="count", default=0)
+    args = parser.parse_args()
+        # answer = args.x**args.y
+        # if args.verbosity >= 2:
+        #     print "{} to the power {} equals {}".format(args.x, args.y, answer)
+        # elif args.verbosity >= 1:
+        #     print "{}^{} == {}".format(args.x, args.y, answer)
+        # else:
+        #     print answer
+
     # TODO: add -f mode (force, don't check if already set)
     # TODO: add --dry-run mode (don't do anything)
     # TODO: add --verbose mode (print command)
@@ -161,6 +175,8 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         print("Please specify at least one image!")
         sys.exit(1)
+
+    sys.exit()
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
     # print(OSX_VERSION)
