@@ -41,7 +41,7 @@ def image_already_set(file):
     return False
 
 
-def change_desktop_new_alternating(file_arr):
+def change_desktop_new_alternating(file_arr, args):
     home = expanduser("~")
 
     data_block = ""
@@ -81,7 +81,7 @@ def change_desktop_new_alternating(file_arr):
     return run_command(command)
 
 
-def change_desktop_new(file):
+def change_desktop_new(file, args):
     if image_already_set(file):
         return
 
@@ -135,7 +135,7 @@ def change_desktop_new(file):
     return run_command(command)
 
 
-def change_desktop_old(file):
+def change_desktop_old(file, args):
     if image_already_set(file):
         return
 
@@ -175,7 +175,7 @@ if __name__ == "__main__":
     if int(OSX_VERSION) <= 12:
         if len(args.images) == 1:
             file = args.images[0]
-            change_desktop_old(file)
+            change_desktop_old(file, args)
         else:
             print("ERROR: Only a single image is supported!")
             sys.exit(1)
@@ -186,8 +186,8 @@ if __name__ == "__main__":
             #   - pick a new random image per space (-r)
 
             args = sys.argv[1:]
-            change_desktop_new_alternating(args)
+            change_desktop_new_alternating(args, args)
             pass
         else:
             file = args.images[0]
-            change_desktop_new(file)
+            change_desktop_new(file, args)
