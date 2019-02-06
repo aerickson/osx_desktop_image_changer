@@ -1,25 +1,30 @@
 #!/usr/bin/env bash
 
 set -e
-#set -x
+set -x
 
+# replace home path with $HOME var
 rpstring="s#$HOME#\$HOME#g"
-# TODO: check that $@ isn't already on the end of the string
-rpstring2='/.\/change/ s/$/ $@/g'
+# add $@ to end of command so we can use args
+# - check that $@ isn't already on the end of the string
+rpstring2='/.\/change.*(?!\$@)\ $\@/ s/$/ $@/g'
+
+WFILE=$1
 
 # testing
-#sed -e "$rpstring" -e "$rpstring2" $1
+#sed -e "$rpstring" -e "$rpstring2" $WFILE
 #exit
 
 # for real
-sed -i '.bak' -e "$rpstring" -e "$rpstring2" $1
+sed -i '.bak' -e "$rpstring" -e "$rpstring2" $WFILE
 
 # cleanup if .bak is identical
 set +e
-_OUTPUT=`cmp --silent ${1} ${1}.bak`
+# can't use $1 $1.bak because xargs mucks with $1 or something...
+_OUTPUT=$(cmp --silent ${WFILE}*)
 RESULT=$?
 set -e
 
 if [ "$RESULT" -eq "0" ]; then
-  rm ${1}.bak
+  rm ${WFILE}.bak
 fi
