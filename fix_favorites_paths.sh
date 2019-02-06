@@ -4,6 +4,7 @@ set -e
 #set -x
 
 rpstring="s#$HOME#\$HOME#g"
+# TODO: check that $@ isn't already on the end of the string
 rpstring2='/.\/change/ s/$/ $@/g'
 
 # testing
