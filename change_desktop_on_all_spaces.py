@@ -47,7 +47,8 @@ def image_already_set(file):
 def change_desktop_new_single_random(file_arr, args):
     # remove the current image from the list
     current = get_current_image()
-    _deleted_item = file_arr.remove(current)
+    if current in file_arr:
+      _deleted_item = file_arr.remove(current)
 
     choice = random.choice(file_arr)
     return change_desktop_new(choice, args)
