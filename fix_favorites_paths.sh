@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
 set -e
-#set -x
+set -x
 
 rpstring="s#$HOME#\$HOME#g"
+rpstring2='s/$/ $@/g'
 
 # testing
-#sed $rpstring $1
+sed -e "$rpstring" -e "$rpstring2" $1
+exit
 
 # for real
 sed -i '.bak' $rpstring $1
