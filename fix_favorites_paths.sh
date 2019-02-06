@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 set -e
-set -x
+#set -x
 
 rpstring="s#$HOME#\$HOME#g"
-rpstring2='s/$/ $@/g'
+rpstring2='/.\/change/ s/$/ $@/g'
 
 # testing
-sed -e "$rpstring" -e "$rpstring2" $1
-exit
+#sed -e "$rpstring" -e "$rpstring2" $1
+#exit
 
 # for real
-sed -i '.bak' $rpstring $1
+sed -i '.bak' -e "$rpstring" -e "$rpstring2" $1
 
 # cleanup if .bak is identical
 set +e
