@@ -25,3 +25,5 @@ I couldn't find any tools to set the image on all spaces in 10.13 or 10.14.
 ## links
 
 - https://developer.apple.com/library/archive/samplecode/DesktopImage/Introduction/Intro.html#//apple_ref/doc/uid/DTS40008860-Intro-DontLinkElementID_2
+- https://www.tech-otaku.com/mac/setting-desktop-image-macos-mojave-from-command-line/
+  - https://github.com/tech-otaku/macos-desktop
