@@ -24,8 +24,10 @@ I couldn't find any tools to set the image on all spaces in 10.13 or 10.14.
 
 ## handy commands
 
-- reset db:
+- reset db
   - `killall System\ Preferences > /dev/null 2>&1 && rm ~/Library/Application\ Support/Dock/desktoppicture.db && killall Dock`
+- dump db
+  - `sqlite3  "$HOME/Library/Application Support/Dock/desktoppicture.db" ".dump"`
 
 ## links
 
