@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import argparse
 import itertools
@@ -68,12 +68,12 @@ def change_desktop_new_alternating(file_arr, args):
     for item in file_arr:
         data_block += "INSERT INTO data (value) VALUES ('%s'); " % item
 
-    single_arr = range(1, len(file_arr) + 1)
+    single_arr = list(range(1, len(file_arr) + 1))
     double_arr = double_array(single_arr)
     my_iterator = itertools.cycle(double_arr)
     # print(len(file_arr))
     for i in range(1, PREF_ENTRIES + 1):
-        element = my_iterator.next()
+        element = next(my_iterator)
         # print(element)
         prefs_block += (
             "INSERT INTO preferences (key, data_id, picture_id) VALUES (1, %s, %s); "
@@ -215,7 +215,7 @@ if __name__ == "__main__":
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
     if args.verbose:
-        print("OS X version: %s" % OSX_VERSION)
+        print(("OS X version: %s" % OSX_VERSION))
     if int(OSX_VERSION) <= 12:
         if args.verbose:
             print("< 10.13: single image")
