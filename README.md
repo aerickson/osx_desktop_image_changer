@@ -25,9 +25,9 @@ I couldn't find any tools to set the image on all spaces in OS X 10.13-10.15.
 ## handy commands
 
 - reset db
-  - `killall System\ Preferences > /dev/null 2>&1 && rm ~/Library/Application\ Support/Dock/desktoppicture.db && killall Dock`
+  - `./reset.sh`
 - dump db
-  - `sqlite3  "$HOME/Library/Application Support/Dock/desktoppicture.db" ".dump"`
+  - `./dump.sh`
 
 ## links
 
