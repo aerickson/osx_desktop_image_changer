@@ -3,6 +3,8 @@
 set -e
 set -x
 
+# TODO: fail to run if no arg (or do all?)
+
 # replace home path with $HOME var
 rpstring="s#$HOME#\$HOME#g"
 # add $@ to end of command so we can use args
