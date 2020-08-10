@@ -45,13 +45,14 @@ def image_already_set(file):
     return False
 
 def change_desktop_new_single_random(file_arr, args):
+    ## no guarantee that we'll have single image...
     # remove the current image from the list
-    current = get_current_image()
-    if current in file_arr:
-      _deleted_item = file_arr.remove(current)
+    # current = get_current_image()
+    # if current in file_arr:
+    #   _deleted_item = file_arr.remove(current)
 
     choice = random.choice(file_arr)
-    return change_desktop_new(choice, args)
+    return change_desktop_new_alternating([choice], args)
 
 def change_desktop_new_alternating(file_arr, args):
     home = expanduser("~")
@@ -63,7 +64,7 @@ def change_desktop_new_alternating(file_arr, args):
     # 2 per screen and then one for the default screen or something
     # 42 should work up to 21 screens?
     # 50 up to 23 screens
-    PREF_ENTRIES = 50
+    PREF_ENTRIES = 70
 
     for item in file_arr:
         data_block += "INSERT INTO data (value) VALUES ('%s'); " % item
@@ -234,6 +235,8 @@ if __name__ == "__main__":
             #   - select one randomly, set all to it (-s)
             #   - pick a new random image per space (-r)
             if args.single_random:
+                if args.verbose:
+                    print("single random mode")
                 change_desktop_new_single_random(args.images, args)
             else:
                 change_desktop_new_alternating(args.images, args)
