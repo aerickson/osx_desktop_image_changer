@@ -23,6 +23,7 @@ def double_array(an_arr):
         new_arr.append(item)
     return new_arr
 
+
 def get_current_image():
     home = expanduser("~")
     d = {"home": home, "file": file}
@@ -37,12 +38,14 @@ def get_current_image():
     output = run_command(command).strip()
     return output
 
+
 def image_already_set(file):
     output = get_current_image()
     # print(output)
     if output == file:
         return True
     return False
+
 
 def change_desktop_new_single_random(file_arr, args):
     ## no guarantee that we'll have single image...
@@ -53,6 +56,7 @@ def change_desktop_new_single_random(file_arr, args):
 
     choice = random.choice(file_arr)
     return change_desktop_new_alternating([choice], args)
+
 
 def change_desktop_new_alternating(file_arr, args):
     home = expanduser("~")
@@ -155,7 +159,6 @@ def change_desktop_new(file, args):
         " && killall Dock
 """
 
-
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
     if args.verbose or args.dry_run:
@@ -206,9 +209,19 @@ if __name__ == "__main__":
         help="print extra information",
     )
     #
-    parser.add_argument("-s", "--single-random", action="store_true", help="set all spaces to one randomly chosen image")
+    parser.add_argument(
+        "-s",
+        "--single-random",
+        action="store_true",
+        help="set all spaces to one randomly chosen image",
+    )
     # parser.add_argument("-r", "--random", action="store_true", help="set each spaces randomly using all images")
-    parser.add_argument("-a", "--alternating", action="store_true", help="set all spaces in the order given (repeats)")
+    parser.add_argument(
+        "-a",
+        "--alternating",
+        action="store_true",
+        help="set all spaces in the order given (repeats)",
+    )
 
     args = parser.parse_args()
     # print(args)
