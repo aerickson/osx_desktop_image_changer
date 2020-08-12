@@ -10,8 +10,6 @@ import sys
 
 
 def run_command(command):
-    # c = subprocess.call(["ls", "-l"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    # print(c.stdout.decode('utf-8'))
     output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
     return output.decode("utf-8")
 
@@ -34,14 +32,12 @@ def get_current_image():
 """
     command = command.format(**d).strip()
     command = re.sub(" +", " ", command)
-    # print(command)
     output = run_command(command).strip()
     return output
 
 
 def image_already_set(file):
     output = get_current_image()
-    # print(output)
     if output == file:
         return True
     return False
@@ -76,10 +72,8 @@ def change_desktop_new_alternating(file_arr, args):
     single_arr = list(range(1, len(file_arr) + 1))
     double_arr = double_array(single_arr)
     my_iterator = itertools.cycle(double_arr)
-    # print(len(file_arr))
     for i in range(1, PREF_ENTRIES + 1):
         element = next(my_iterator)
-        # print(element)
         prefs_block += (
             "INSERT INTO preferences (key, data_id, picture_id) VALUES (1, %s, %s); "
             % (element, i)
@@ -224,8 +218,6 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    # print(args)
-    # sys.exit()
 
     OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
     if args.verbose:
