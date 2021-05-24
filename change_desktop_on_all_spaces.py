@@ -219,10 +219,35 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    OSX_VERSION = run_command("sw_vers -productVersion | cut -d '.' -f 2").strip()
+    output = run_command("sw_vers -productVersion").split('.')
+    MAJOR_OSX_VERSION = int(output[0])
+    MINOR_OSX_VERSION = int(output[1])
+    print(MAJOR_OSX_VERSION)
+    print(MINOR_OSX_VERSION)
     if args.verbose:
         print(("OS X version: %s" % OSX_VERSION))
-    if int(OSX_VERSION) <= 12:
+
+    # 11+
+    if MAJOR_OSX_VERSION == 11:
+        if len(args.images) >= 2:
+            if args.verbose:
+                print("10.13+: multi image")
+            # TODO: possible other modes:
+            #   - select one randomly, set all to it (-s)
+            #   - pick a new random image per space (-r)
+            if args.single_random:
+                if args.verbose:
+                    print("single random mode")
+                change_desktop_new_single_random(args.images, args)
+            else:
+                change_desktop_new_alternating(args.images, args)
+        else:
+            if args.verbose:
+                print("10.13+: single image")
+            file = args.images[0]
+            change_desktop_new(file, args)        
+    # 10.12 and lower    
+    elif MAJOR_OSX_VERSION == 10 and MINOR_OSX_VERSION <= 12:
         if args.verbose:
             print("< 10.13: single image")
 
@@ -232,6 +257,7 @@ if __name__ == "__main__":
         else:
             print("ERROR: Only a single image is supported!")
             sys.exit(1)
+    # 10.13+
     else:
         if len(args.images) >= 2:
             if args.verbose:
