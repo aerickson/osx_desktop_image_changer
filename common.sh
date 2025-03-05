@@ -1,5 +1,6 @@
 # Configuration
-IMAGE_ROOT="$HOME/Downloads/macOS Wallpapers"
+IMAGE_ROOT_MAC="$HOME/Downloads/macOS Wallpapers"
+IMAGE_ROOT_IOS="$HOME/Downloads/iOS Wallpapers"
 SYMLINK_TREE_ROOT="$HOME/Downloads/desktop-favorites"
 
 create_symlink_dest() {
