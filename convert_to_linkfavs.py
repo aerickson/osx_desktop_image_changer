@@ -9,13 +9,16 @@ def main():
     parser = argparse.ArgumentParser(description="Convert favorite scripts to linkfavs scripts.")
     parser.add_argument('-d', '--dry-run', action='store_true', help="Run the script without making any changes.")
     parser.add_argument('-o', '--overwrite', action='store_true', help="Overwrite existing linkfavs files.")
+    parser.add_argument('file', nargs='?', help="Specific file to process.")
     args = parser.parse_args()
 
     print("Starting the script...")  # Debugging output
-    # Loop through all favorites-*.sh files
-    for fav_file in os.listdir('.'):
+
+    files_to_process = [args.file] if args.file else [f for f in os.listdir('.') if f.startswith('favorites-') and f.endswith('.sh')]
+
+    for fav_file in files_to_process:
         # print(f"Inspecting file: {fav_file}")  # Debugging output
-        if not fav_file.startswith('favorites-') or not fav_file.endswith('.sh'):
+        if not fav_file:
             continue
 
         # Create output filename
@@ -40,7 +43,9 @@ def main():
             print(f"Determined image root: {image_root}")  # Debugging output
 
         # Extract the image filenames
-        images = re.findall(r'([\w\s]*\.(?:jpg|heic))', content)
+        images = re.findall(r'([\w\s\\(\\)]*\.(?:jpg|heic))', content)
+        # for each image, remove all '\' characters
+        images = [re.sub(r'\\', '', image) for image in images]
         print(f"Extracted images: {images}")  # Debugging output
 
         if args.dry_run:
@@ -57,9 +62,8 @@ set -e
 
 IMAGES_TO_LINK=(
 """)
-            for image in images:
-                file.write(f'    "{image}"\n')
-            file.write(""")
+            file.write('\n'.join(f'    "{image}"' for image in images))
+            file.write("""
 )
 
 . ./common.sh
