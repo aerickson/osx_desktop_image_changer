@@ -43,7 +43,7 @@ def main():
             print(f"Determined image root: {image_root}")  # Debugging output
 
         # Extract the image filenames
-        images = re.findall(r'([\w\s\\(\\)\_\~\@\-]*\.(?:jpg|heic|png))', content)
+        images = re.findall(r'([\w\s\\(\\)\_\~\@\-\.]*\.(?:jpg|heic|png))', content)
         # for each image, remove all '\' characters
         images = [re.sub(r'\\', '', image) for image in images]
         print(f"Extracted images: {images}")  # Debugging output
