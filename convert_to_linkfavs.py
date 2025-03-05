@@ -43,10 +43,15 @@ def main():
             print(f"Determined image root: {image_root}")  # Debugging output
 
         # Extract the image filenames
-        images = re.findall(r'([\w\s\\(\\)]*\.(?:jpg|heic))', content)
+        images = re.findall(r'([\w\s\\(\\)\_\~\@\-]*\.(?:jpg|heic|png))', content)
         # for each image, remove all '\' characters
         images = [re.sub(r'\\', '', image) for image in images]
         print(f"Extracted images: {images}")  # Debugging output
+
+        # if the image count is zero, there's a problem... exit 1
+        if len(images) == 0:
+            print(f"Could not find any images in {fav_file}")
+            sys.exit(1)
 
         if args.dry_run:
             print(f"Dry run: would create {linkfav_file} with images {images}")
