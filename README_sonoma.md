@@ -6,6 +6,10 @@ OS X 15 now includes the ability to shuffle between backgrounds.
 
 The new strategy is to build out symlink trees and point OS X at the directory.
 
+See the `linkfavs*` scripts for an implementation of this.
+
+Once the linkfavs scripts have been run, in OS X's Wallpaper Preference Pane, select 'Add Folder or Album' and select the desired folder.
+
 ## research
 
 ### details about how OS X 15 changes things
