@@ -3,6 +3,7 @@
 import os
 import sys
 import re
+import argparse
 
 def generate_token(filenames):
     """Generate a token from file names by removing variations and colors"""
@@ -40,11 +41,15 @@ def generate_token(filenames):
     return token
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python generate_linkfavs.py file1.jpg file2.jpg ...")
-        sys.exit(1)
+    # Create argument parser
+    parser = argparse.ArgumentParser(description="Generate linkfavs shell scripts for wallpapers")
+    parser.add_argument("-f", "--file", help="Output filename/path for the generated script")
+    parser.add_argument("--overwrite", action="store_true", help="Overwrite the output file if it already exists")
+    parser.add_argument("files", nargs="+", help="Image files to include in the script")
     
-    files = sys.argv[1:]
+    args = parser.parse_args()
+    
+    files = args.files
     
     # Check if all files exist
     for file_path in files:
@@ -67,15 +72,23 @@ def main():
     token = generate_token(files)
     
     # Create the script filename
-    script_filename = f"linkfavs-{token}.sh"
+    if args.file:
+        script_filename = args.file
+    else:
+        script_filename = f"linkfavs-{token}.sh"
     
     # Check if the script already exists
-    if os.path.exists(script_filename):
-        print(f"Error: Script {script_filename} already exists. Choose a different name or remove the existing file.")
+    if os.path.exists(script_filename) and not args.overwrite:
+        print(f"Error: Script {script_filename} already exists. Use --overwrite to replace it.")
         sys.exit(1)
     
     # Get the directory path for IMAGE_ROOT
     image_dir = list(directories)[0]
+    
+    # Replace the home directory with $HOME if applicable
+    home_dir = os.path.expanduser("~")
+    if image_dir.startswith(home_dir):
+        image_dir = image_dir.replace(home_dir, "$HOME", 1)
     
     # Extract just the basenames of the files for the script
     basenames = [os.path.basename(f) for f in files]
