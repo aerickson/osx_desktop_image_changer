@@ -4,6 +4,7 @@ import os
 import sys
 import re
 import argparse
+import shlex
 
 def generate_token(filenames):
     """Generate a token from file names by removing variations and colors"""
@@ -45,12 +46,36 @@ def main():
     parser = argparse.ArgumentParser(description="Generate linkfavs shell scripts for wallpapers")
     parser.add_argument("-f", "--file", help="Output filename/path for the generated script")
     parser.add_argument("--overwrite", action="store_true", help="Overwrite the output file if it already exists")
-    parser.add_argument("files", nargs="+", help="Image files to include in the script")
+    parser.add_argument("-i", "--interactive", action="store_true", help="Read files from standard input")
+    parser.add_argument("files", nargs="*", help="Image files to include in the script")
     
     args = parser.parse_args()
     
     files = args.files
     
+    # Handle interactive mode
+    if args.interactive:
+        print("Enter file paths (one per line). Press Ctrl+D when done:")
+        try:
+            input_lines = sys.stdin.read().strip().split('\n')
+            # Process each line as a complete filename, not splitting on spaces
+            for line in input_lines:
+                line = line.strip()
+                if line:
+                    files.append(line)
+        except KeyboardInterrupt:
+            print("\nInterrupted by user. Exiting.")
+            sys.exit(1)
+        
+        if not files:
+            print("No files provided. Exiting.")
+            sys.exit(1)
+    
+    # Ensure we have files to process
+    if not files:
+        parser.print_help()
+        sys.exit(1)
+        
     # Check if all files exist
     for file_path in files:
         if not os.path.exists(file_path):
