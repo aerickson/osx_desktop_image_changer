@@ -5,14 +5,34 @@ import sys
 import re
 
 def generate_token(filenames):
-    """Generate a token from file names by removing numbers and replacing spaces with underscores"""
+    """Generate a token from file names by removing variations and colors"""
     # Extract just the base filenames without extensions
     base_names = [os.path.splitext(os.path.basename(f))[0] for f in filenames]
     
-    # Find common prefix by looking at the first filename (assuming related files share common naming)
-    # Remove digits and replace spaces with underscores
-    common_part = re.sub(r'\d+', '', base_names[0]).strip()
-    token = common_part.replace(' ', '_').lower()
+    # Find common prefix across all filenames
+    if not base_names:
+        return "wallpaper"
+        
+    # Get the first part of the filename that's common across all files
+    # For example, "iMac" from "iMac Blue", "iMac Green", etc.
+    words_list = [name.split() for name in base_names]
+    
+    # Find common prefix words
+    common_prefix = []
+    if words_list:
+        first_words = words_list[0]
+        for i, word in enumerate(first_words):
+            if all(i < len(words) and words[i] == word for words in words_list):
+                common_prefix.append(word)
+            else:
+                break
+    
+    if common_prefix:
+        token = "_".join(common_prefix).lower()
+    else:
+        # Fallback: use the first filename with numbers removed
+        token = re.sub(r'\d+', '', base_names[0]).strip()
+        token = token.replace(' ', '_').lower()
     
     # Remove any trailing or leading underscores
     token = token.strip('_')
@@ -48,6 +68,11 @@ def main():
     
     # Create the script filename
     script_filename = f"linkfavs-{token}.sh"
+    
+    # Check if the script already exists
+    if os.path.exists(script_filename):
+        print(f"Error: Script {script_filename} already exists. Choose a different name or remove the existing file.")
+        sys.exit(1)
     
     # Get the directory path for IMAGE_ROOT
     image_dir = list(directories)[0]
